@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="utf-8">
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+    <title>Dancing Tree</title>
+
+    <link rel="stylesheet" media="screen" href="https://cpwebassets.codepen.io/assets/fullpage/fullpage-96f5da14bc71e5883d519b4eb5e93297dde552c2f91a97fcfb30035219cf1c1a.css" />
+
+    <meta name="apple-mobile-web-app-title" content="CodePen">
+
+    <link rel="shortcut icon" type="image/x-icon" href="Tree.png" />
+
+    <script>
+        if (document.location.search.match(/type=embed/gi)) {
+            window.parent.postMessage("resize", "*");
+        }
+    </script>
+
+
+    <style>
+        html {
+            font-size: 15px;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+        }
+
+        body {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* $linkColorOnBlack */
+    </style>
+</head>
+
+<body class="">
+    <div id="result-iframe-wrap" role="main">
+
+        <iframe id="result" srcdoc="
+<!DOCTYPE html>
+<html lang=&quot;en&quot; >
+
+<head>
+
+  <meta charset=&quot;UTF-8&quot;>
+  
+<link rel=&quot;apple-touch-icon&quot; type=&quot;image/png&quot; href=&quot;https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png&quot; />
+<meta name=&quot;apple-mobile-web-app-title&quot; content=&quot;CodePen&quot;>
+
+<link rel=&quot;shortcut icon&quot; type=&quot;image/x-icon&quot; href=&quot;https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico&quot; />
+
+<link rel=&quot;mask-icon&quot; type=&quot;image/x-icon&quot; href=&quot;https://cpwebassets.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg&quot; color=&quot;#111&quot; />
+
+
+  <title>CodePen - Three.js dancing Tree (for Xmas)</title>
+  <meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;>
+ <link rel=&quot;stylesheet&quot; href=&quot;https://use.typekit.net/bji5ovt.css&quot;>
+  
+  
+  
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow: hidden;
+  background: #00101a;
+}
+body {
+  font-family: fino-sans, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-weight: 700;
+  font-style: normal;
+}
+.webgl {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+}
+
+button {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  -webkit-appearance: none;
+  background: crimson;
+  color: white;
+  font: inherit;
+  font-size: 1.5rem;
+  padding: 0.75rem 2.5rem;
+  border: none;
+  border-radius: 1.75rem;
+  cursor: pointer;
+}
+
+h1 {
+  position: absolute;
+  color: white;
+  top: 3rem;
+  left: 3rem;
+  right: 3rem;
+  text-align: center;
+  font-size: 3rem;
+}
+
+footer {
+  position: absolute;
+  left: 0.5rem;
+  bottom: 0.5rem;
+  color: white;
+  font-family: monospace;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+a {
+  color: inherit;
+}
+</style>
+
+  <script>
+  window.console = window.console || function(t) {};
+</script>
+
+  
+  
+  <script>
+  if (document.location.search.match(/type=embed/gi)) {
+    window.parent.postMessage(&quot;resize&quot;, &quot;*&quot;);
+  }
+</script>
+
+
+</head>
+
+<body translate=&quot;no&quot; >
+  <canvas class=&quot;webgl&quot;></canvas>
+<!--<h1><small>With</small> Seasonal Wishes <small>from</small> Hoang</h1>-->
+<button id=&quot;play-music&quot; type=&quot;button&quot;>Play music</button>
+<footer>
+  <!--<p>Built with Three.js and GSAP.</p>-->
+</footer>
+<script type=&quot;x-shader/x-vertex&quot; id=&quot;vertexShader&quot;>
+  uniform float uTime;
+uniform float uSize;
+attribute float aScale;
+attribute vec3 aColor;
+attribute float phi;
+attribute float random;
+//attribute float random1;
+varying vec2 vUv;
+varying vec3 vColor;
+
+void main() {
+  float angle = phi;
+  angle += uTime * random;
+  angle = mod(angle, 39.3);
+  float radius = 0.065 * angle;
+  float rand = (random - 0.5) * 0.05 * pow(angle, .75);
+  vec3 myOffset =
+      vec3(radius * cos(angle) + rand,
+           2.9 - 2.7 * radius + rand +
+               0.1 * (random - .5) * pow(angle, .25) * sin(2.0 * uTime),
+           radius * sin(angle) + rand);
+  vec3 myPosition = myOffset;
+  vec4 modelPosition = modelMatrix * vec4(myPosition, 1.0);
+
+  vec4 viewPosition = viewMatrix * modelPosition;
+  viewPosition.xyz += position * aScale * uSize;
+  gl_Position = projectionMatrix * viewPosition;
+
+  vColor = aColor;
+  vUv = uv;
+}
+</script>
+
+<script type=&quot;x-shader/x-fragment&quot; id=&quot;fragmentShader&quot;>
+  varying vec3 vColor;
+varying vec2 vUv;
+
+void main() {
+  vec2 uv = vUv;
+  vec3 color = vColor;
+  float strength = distance(uv, vec2(0.5));
+  strength *= 2.0;
+  strength = 1.0 - strength;
+  gl_FragColor = vec4(strength * color, 1.0);
+}
+</script>
+
+<script type=&quot;x-shader/x-vertex&quot; id=&quot;vertexShaderExt&quot;>
+  #define M_PI 3.1415926535897932384626433832795
+varying float vColorMix;
+varying vec2 vUv;
+uniform float uTime;
+
+vec3 mod289(vec3 x) {
+  return x - floor(x * (1.0 / 289.0)) * 289.0;
+}
+
+vec4 mod289(vec4 x) {
+  return x - floor(x * (1.0 / 289.0)) * 289.0;
+}
+
+vec4 permute(vec4 x) {
+     return mod289(((x*34.0)+1.0)*x);
+}
+
+vec4 taylorInvSqrt(vec4 r)
+{
+  return 1.79284291400159 - 0.85373472095314 * r;
+}
+
+float snoise(vec3 v)
+  {
+  const vec2  C = vec2(1.0/6.0, 1.0/3.0) ;
+  const vec4  D = vec4(0.0, 0.5, 1.0, 2.0);
+
+// First corner
+  vec3 i  = floor(v + dot(v, C.yyy) );
+  vec3 x0 =   v - i + dot(i, C.xxx) ;
+
+// Other corners
+  vec3 g = step(x0.yzx, x0.xyz);
+  vec3 l = 1.0 - g;
+  vec3 i1 = min( g.xyz, l.zxy );
+  vec3 i2 = max( g.xyz, l.zxy );
+
+  //   x0 = x0 - 0.0 + 0.0 * C.xxx;
+  //   x1 = x0 - i1  + 1.0 * C.xxx;
+  //   x2 = x0 - i2  + 2.0 * C.xxx;
+  //   x3 = x0 - 1.0 + 3.0 * C.xxx;
+  vec3 x1 = x0 - i1 + C.xxx;
+  vec3 x2 = x0 - i2 + C.yyy; // 2.0*C.x = 1/3 = C.y
+  vec3 x3 = x0 - D.yyy;      // -1.0+3.0*C.x = -0.5 = -D.y
+
+// Permutations
+  i = mod289(i);
+  vec4 p = permute( permute( permute(
+             i.z + vec4(0.0, i1.z, i2.z, 1.0 ))
+           + i.y + vec4(0.0, i1.y, i2.y, 1.0 ))
+           + i.x + vec4(0.0, i1.x, i2.x, 1.0 ));
+
+// Gradients: 7x7 points over a square, mapped onto an octahedron.
+// The ring size 17*17 = 289 is close to a multiple of 49 (49*6 = 294)
+  float n_ = 0.142857142857; // 1.0/7.0
+  vec3  ns = n_ * D.wyz - D.xzx;
+
+  vec4 j = p - 49.0 * floor(p * ns.z * ns.z);  //  mod(p,7*7)
+
+  vec4 x_ = floor(j * ns.z);
+  vec4 y_ = floor(j - 7.0 * x_ );    // mod(j,N)
+
+  vec4 x = x_ *ns.x + ns.yyyy;
+  vec4 y = y_ *ns.x + ns.yyyy;
+  vec4 h = 1.0 - abs(x) - abs(y);
+
+  vec4 b0 = vec4( x.xy, y.xy );
+  vec4 b1 = vec4( x.zw, y.zw );
+
+  //vec4 s0 = vec4(lessThan(b0,0.0))*2.0 - 1.0;
+  //vec4 s1 = vec4(lessThan(b1,0.0))*2.0 - 1.0;
+  vec4 s0 = floor(b0)*2.0 + 1.0;
+  vec4 s1 = floor(b1)*2.0 + 1.0;
+  vec4 sh = -step(h, vec4(0.0));
+
+  vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy ;
+  vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww ;
+
+  vec3 p0 = vec3(a0.xy,h.x);
+  vec3 p1 = vec3(a0.zw,h.y);
+  vec3 p2 = vec3(a1.xy,h.z);
+  vec3 p3 = vec3(a1.zw,h.w);
+
+//Normalise gradients
+  vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));
+  p0 *= norm.x;
+  p1 *= norm.y;
+  p2 *= norm.z;
+  p3 *= norm.w;
+
+// Mix final noise value
+  vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+  m = m * m;
+  return 42.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1),
+                                dot(p2,x2), dot(p3,x3) ) );
+  }
+
+
+mat3 rotation3dY(float angle) {
+  float s = sin(angle);
+  float c = cos(angle);
+
+  return mat3(
+    c, 0.0, -s,
+    0.0, 1.0, 0.0,
+    s, 0.0, c
+  );
+}
+
+vec3 rotateY(vec3 v, float angle) {
+  return rotation3dY(angle) * v;
+}
+
+
+void main() {
+  float t = uTime * 0.1;
+  float n = snoise(vec3(position.xy, t)*.2 + t);
+  vec3 pos = position + n * 0.1;
+  pos += 0.1*snoise(pos + t);
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+  vUv = uv;
+  vColorMix = n;
+}
+</script>
+
+<script type=&quot;x-shader/x-fragment&quot; id=&quot;fragmentShaderExt&quot;>
+  varying float vColorMix;
+varying vec2 vUv;
+
+void main() {
+  float n = vColorMix;
+  vec2 uv = vUv;
+  gl_FragColor = vec4(mix(vec3(uv, 1.0), vec3(0.0, 1.0, 1.0), 1.0 - n*n) , n * n * n );
+}
+</script>
+    <script src=&quot;https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-2c7831bb44f98c1391d6a4ffda0e1fd302503391ca806e7fcc7b9b87197aec26.js&quot;></script>
+
+  
+      <script id=&quot;rendered-js&quot; type=&quot;module&quot;>
+import * as THREE from &quot;https://cdn.skypack.dev/three@0.135.0&quot;;
+/*import {
+  BloomEffect,
+  EffectComposer,
+  EffectPass,
+  RenderPass,
+  BlendFunction,
+  KernelSize
+} from &quot;https://cdn.skypack.dev/postprocessing&quot;;*/
+import { gsap } from &quot;https://cdn.skypack.dev/gsap@3.8.0&quot;;
+
+class World {
+  constructor({
+    canvas,
+    width,
+    height,
+    cameraPosition,
+    fieldOfView = 75,
+    nearPlane = 0.1,
+    farPlane = 100 })
+  {
+    this.parameters = {
+      count: 1500,
+      max: 12.5 * Math.PI,
+      a: 2,
+      c: 4.5 };
+
+    this.scene = new THREE.Scene();
+    this.scene.background = new THREE.Color(&quot;#00101a&quot;);
+    this.clock = new THREE.Clock();
+    this.data = 0;
+    this.time = { current: 0, t0: 0, t1: 0, t: 0, frequency: 0.0005 };
+    this.angle = { x: 0, z: 0 };
+    this.width = width || window.innerWidth;
+    this.height = height || window.innerHeight;
+    this.aspectRatio = this.width / this.height;
+    this.fieldOfView = fieldOfView;
+    this.camera = new THREE.PerspectiveCamera(
+    this.fieldOfView,
+    this.aspectRatio,
+    nearPlane,
+    farPlane);
+
+    this.camera.position.set(
+    cameraPosition.x,
+    cameraPosition.y,
+    cameraPosition.z);
+
+    this.scene.add(this.camera);
+    this.renderer = new THREE.WebGLRenderer({
+      canvas,
+      powerPreference: &quot;high-performance&quot;,
+      antialias: false,
+      stencil: false,
+      depth: false });
+
+    this.pixelRatio = Math.min(window.devicePixelRatio, 2);
+    this.renderer.setPixelRatio(this.pixelRatio);
+    this.renderer.setSize(this.width, this.height);
+    this.timer = 0;
+    this.addToScene();
+    this.addButton();
+
+    this.render();
+    // this.postProcessing();
+    this.listenToResize();
+  }
+  start() {}
+  render() {
+    this.renderer.render(this.scene, this.camera);
+    this.composer &amp;&amp; this.composer.render();
+  }
+  loop() {
+    this.time.elapsed = this.clock.getElapsedTime();
+    this.time.delta = Math.min(
+    60,
+    (this.time.current - this.time.elapsed) * 1000);
+
+    if (this.analyser &amp;&amp; this.isRunning) {
+      this.time.t = this.time.elapsed - this.time.t0 + this.time.t1;
+      this.data = this.analyser.getAverageFrequency();
+      this.data *= this.data / 2000;
+      this.angle.x += this.time.delta * 0.001 * 0.63;
+      this.angle.z += this.time.delta * 0.001 * 0.39;
+      const justFinished = this.isRunning &amp;&amp; !this.sound.isPlaying;
+      if (justFinished) {
+        this.time.t1 = this.time.t;
+        this.audioBtn.textContent = &quot;Play again&quot;;
+        this.audioBtn.disabled = false;
+        this.isRunning = false;
+        const tl = gsap.timeline();
+        this.angle.x = 0;
+        this.angle.z = 0;
+        tl.to(this.camera.position, {
+          x: 0,
+          z: 4.5,
+          duration: 4,
+          ease: &quot;expo.in&quot; });
+
+        tl.to(this.audioBtn, {
+          opacity: () => 1,
+          duration: 1,
+          ease: &quot;power1.out&quot; });
+
+      } else {
+        this.camera.position.x = Math.sin(this.angle.x) * this.parameters.a;
+        this.camera.position.z = Math.min(
+        Math.max(Math.cos(this.angle.z) * this.parameters.c, -4.5),
+        4.5);
+
+      }
+    }
+    this.camera.lookAt(this.scene.position);
+    this.spiralMaterial.uniforms.uTime.value +=
+    this.time.delta * this.time.frequency * (1 + this.data * 0.2);
+    this.extMaterial.uniforms.uTime.value +=
+    this.time.delta * this.time.frequency;
+    //this.mesh.rotation.y += 0.0001 * this.time.delta * data
+    for (const octa of this.octas.children) {
+      octa.rotation.y += this.data ?
+      0.001 * this.time.delta * this.data / 5 :
+      0.001 * this.time.delta;
+    }
+    this.octas.rotation.y -= 0.0002 * this.time.delta;
+    this.externalSphere.rotation.y += 0.0001 * this.time.delta;
+    this.render();
+
+    this.time.current = this.time.elapsed;
+    requestAnimationFrame(this.loop.bind(this));
+  }
+  listenToResize() {
+    window.addEventListener(&quot;resize&quot;, () => {
+      // Update sizes
+      this.width = window.innerWidth;
+      this.height = window.innerHeight;
+
+      // Update camera
+      
+      // Update renderer
+      this.renderer.setSize(this.width, this.height);
+      this.composer.setSize(this.width, this.height);
+    });
+  }
+  addSpiral() {
+    this.spiralMaterial = new THREE.ShaderMaterial({
+      vertexShader: document.getElementById(&quot;vertexShader&quot;).textContent,
+      fragmentShader: document.getElementById(&quot;fragmentShader&quot;).textContent,
+      uniforms: {
+        uTime: { value: 0 },
+        uSize: { value: 0.045 } },
+
+      depthWrite: false,
+      blending: THREE.AdditiveBlending });
+
+    const count = this.parameters.count; //2000
+    const scales = new Float32Array(count * 1);
+    const colors = new Float32Array(count * 3);
+    const phis = new Float32Array(count);
+    const randoms = new Float32Array(count);
+    const randoms1 = new Float32Array(count);
+    const colorChoices = [&quot;pink&quot;, &quot;green&quot;, &quot;cyan&quot;, &quot;wheat&quot;, &quot;red&quot;];
+
+    const squareGeometry = new THREE.PlaneGeometry(1, 1);
+    this.instancedGeometry = new THREE.InstancedBufferGeometry();
+    Object.keys(squareGeometry.attributes).forEach(attr => {
+      this.instancedGeometry.attributes[attr] = squareGeometry.attributes[attr];
+    });
+    this.instancedGeometry.index = squareGeometry.index;
+    this.instancedGeometry.maxInstancedCount = count;
+
+    for (let i = 0; i < count; i++) {
+      const i3 = 3 * i;
+      const colorIndex = Math.floor(Math.random() * colorChoices.length);
+      const color = new THREE.Color(colorChoices[colorIndex]);
+      phis[i] = Math.random() * this.parameters.max;
+      randoms[i] = Math.random();
+      scales[i] = Math.random();
+      colors[i3 + 0] = color.r;
+      colors[i3 + 1] = color.g;
+      colors[i3 + 2] = color.b;
+    }
+    this.instancedGeometry.setAttribute(
+    &quot;phi&quot;,
+    new THREE.InstancedBufferAttribute(phis, 1, false));
+
+    this.instancedGeometry.setAttribute(
+    &quot;random&quot;,
+    new THREE.InstancedBufferAttribute(randoms, 1, false));
+
+    this.instancedGeometry.setAttribute(
+    &quot;aScale&quot;,
+    new THREE.InstancedBufferAttribute(scales, 1, false));
+
+    this.instancedGeometry.setAttribute(
+    &quot;aColor&quot;,
+    new THREE.InstancedBufferAttribute(colors, 3, false));
+
+    this.spiral = new THREE.Mesh(this.instancedGeometry, this.spiralMaterial);
+    console.log(this.spiral);
+    this.scene.add(this.spiral);
+  }
+
+  addExternalSphere() {
+    this.extMaterial = new THREE.ShaderMaterial({
+      vertexShader: document.getElementById(&quot;vertexShaderExt&quot;).textContent,
+      fragmentShader: document.getElementById(&quot;fragmentShaderExt&quot;).textContent,
+      uniforms: {
+        uTime: { value: 0 },
+        uColor: { value: new THREE.Color(&quot;orange&quot;) } },
+
+      wireframe: true,
+      transparent: true });
+
+    const geometry = new THREE.SphereGeometry(6, 128, 128);
+    this.externalSphere = new THREE.Mesh(geometry, this.extMaterial);
+    this.scene.add(this.externalSphere);
+  }
+  addOctahedron({ color = &quot;white&quot;, scale, position = [0, 0, 0] }) {
+    const octa = new THREE.Mesh(
+    this.octaGeometry,
+    new THREE.MeshBasicMaterial({
+      wireframe: true,
+      color }));
+
+
+    octa.scale.set(...scale);
+    octa.position.set(...position);
+    this.octas.add(octa);
+  }
+  addOctahedrons() {
+    this.octas = new THREE.Group();
+    this.octaGeometry = new THREE.OctahedronGeometry(0.2, 0);
+    this.addOctahedron({ color: &quot;red&quot;, scale: [1, 1.4, 1] });
+    this.addOctahedron({
+      color: &quot;tomato&quot;,
+      position: [0, 0.85, 0],
+      scale: [0.5, 0.7, 0.5] });
+
+
+    this.addOctahedron({
+      color: &quot;red&quot;,
+      position: [1, -0.75, 0],
+      scale: [0.5, 0.7, 0.5] });
+
+    this.addOctahedron({
+      color: &quot;tomato&quot;,
+      position: [-0.75, -1.75, 0],
+      scale: [1, 1.2, 1] });
+
+    this.addOctahedron({
+      color: &quot;red&quot;,
+      position: [0.5, -1.2, 0.5],
+      scale: [0.25, 0.37, 0.25] });
+
+    this.scene.add(this.octas);
+  }
+  addToScene() {
+    this.addSpiral();
+    this.addExternalSphere();
+    this.addOctahedrons();
+  }
+  addButton() {
+    this.audioBtn = document.querySelector(&quot;button&quot;);
+    this.audioBtn.addEventListener(&quot;click&quot;, () => {
+      this.audioBtn.disabled = true;
+      if (this.analyser) {
+        this.sound.play();
+        this.time.t0 = this.time.elapsed;
+        this.data = 0;
+        this.isRunning = true;
+        gsap.to(this.audioBtn, {
+          opacity: 0,
+          duration: 1,
+          ease: &quot;power1.out&quot; });
+
+      } else {
+        this.audioBtn.textContent = &quot;Loading...&quot;;
+        this.loadMusic().then(() => {
+          console.log(&quot;music loaded&quot;);
+        });
+      }
+    });
+  }
+
+  loadMusic() {
+    return new Promise(resolve => {
+      const listener = new THREE.AudioListener();
+      this.camera.add(listener);
+      // create a global audio source
+      this.sound = new THREE.Audio(listener);
+      const audioLoader = new THREE.AudioLoader();
+      audioLoader.load(
+      &quot;https://assets.codepen.io/74321/short-snow_01.mp3&quot;,
+      buffer => {
+        this.sound.setBuffer(buffer);
+        this.sound.setLoop(false);
+        this.sound.setVolume(0.5);
+        this.sound.play();
+        this.analyser = new THREE.AudioAnalyser(this.sound, 32);
+        // get the average frequency of the sound
+        const data = this.analyser.getAverageFrequency();
+        this.isRunning = true;
+        this.t0 = this.time.elapsed;
+        resolve(data);
+      },
+      progress => {
+        gsap.to(this.audioBtn, {
+          opacity: () => 1 - progress.loaded / progress.total,
+          duration: 1,
+          ease: &quot;power1.out&quot; });
+
+      },
+
+      error => {
+        console.log(error);
+      });
+
+    });
+  }
+  /*postProcessing() {
+    this.composer = new EffectComposer(this.renderer);
+    this.composer.addPass(new RenderPass(this.scene, this.camera));
+    this.composer.addPass(
+      new EffectPass(
+        this.camera,
+        new BloomEffect({
+          blendFunction: BlendFunction.SCREEN,
+          kernelSize: KernelSize.MEDIUM,
+          luminanceThreshold: 0.4,
+          intensity: 2.6,
+          luminanceSmoothing: 0.4,
+          height: 480
+        })
+      )
+    );
+  }*/}
+
+
+const world = new World({
+  canvas: document.querySelector(&quot;canvas.webgl&quot;),
+  cameraPosition: { x: 0, y: 0, z: 4.5 } });
+
+
+world.loop();
+//# sourceURL=pen.js
+    </script>
+
+  
+
+</body>
+
+</html>
+ 
+" sandbox="allow-forms allow-modals allow-pointer-lock allow-popups  allow-scripts allow-top-navigation-by-user-activation allow-downloads allow-presentation" allow="accelerometer; camera; encrypted-media; display-capture; geolocation; gyroscope; microphone; midi; clipboard-read; clipboard-write; web-share"
+            allowTransparency="true" allowpaymentrequest="true" allowfullscreen="true" class="result-iframe">
+      </iframe>
+
+    </div>
+</body>
+
+</html>
